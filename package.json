@@ -1,0 +1,17 @@
+{
+  "name": "mika-ui-basic",
+  "version": "0.0.1",
+  "description": "Interface web basica da assistente Mika",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "install": "cp .env.example .env"
+  },
+  "author": "Diogo Bemfica",
+  "license": "MIT",
+  "dependencies": {
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "socket.io": "^2.1.0"
+  }
+}
