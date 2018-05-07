@@ -1,6 +1,7 @@
-//let socket = io('http://localhost:9000');
+let socket = io('http://localhost:9000');
 $(document).ready(() => {
     let listening = false;
+    let mic = $("#mic");
 
     getGeoLocation();
 
@@ -16,11 +17,11 @@ $(document).ready(() => {
 
     artyom.addCommands({indexes: [],action: function(i){}});
 
-
     artyom.redirectRecognizedTextOutput(function(text,isFinal){
         if(isFinal){
-            if(text.toLowerCase() == "mika" || text.toLowerCase() == "mica"){
-                let mic = $("#mic");
+            text = text.trim();
+            console.log(text)
+            if(text.toLowerCase() == "mika" || text.toLowerCase() == "mica"){                
                 mic.removeClass('fa-microphone-slash')
                 mic.addClass('fa-microphone')
                 listening = true;
@@ -31,27 +32,16 @@ $(document).ready(() => {
                     mic.addClass('fa-microphone-slash')
                     listening = false;
                 },10000);
-            }else{
-                if(listening === true){
-                    console.log('enviado: '+ text);
+            }else if(listening === true){
+                    socket.emit('mika-nlp',text);
+                    $("#box").append("<p><u>Você</u>:<br> "+text+"</p>");
                     mic.removeClass('fa-microphone')
                     mic.addClass('fa-microphone-slash')
                     listening = false;
-                }    
             }
-            $("#box").append("<p><u>Você</u>:<br> "+text+"</p>");
-            //socket.emit('mika-nlp',text);
         }
     });
-    //socket.emit('mika-nlp','trocar a cor da lampada da sala para rosa');
 });
-
-//socket.on("mika", function(msg) {
-//    console.log("Recebeu: "+msg);
-//    if( msg !== null ){
-//        artyom.say(msg);
-//    }
-//});
 
 function getGeoLocation(){
     if (navigator.geolocation) {
